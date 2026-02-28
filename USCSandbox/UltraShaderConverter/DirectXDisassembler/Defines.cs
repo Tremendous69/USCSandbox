@@ -412,15 +412,16 @@
 	}
 	public enum ResourceReturnType
 	{
-		UNorm,
-		SNorm,
-		SInt,
-		UInt,
-		Float,
-		Mixed,
-		Double,
-		Continued,
-		Unused
+		Unknown = 0,
+		UNorm = 1,
+		SNorm = 2,
+		SInt = 3,
+		UInt = 4,
+		Float = 5,
+		Mixed = 6,
+		Double = 7,
+		Continued = 8,
+		Unused = 9
 	}
 	public enum SysValueType //
 	{

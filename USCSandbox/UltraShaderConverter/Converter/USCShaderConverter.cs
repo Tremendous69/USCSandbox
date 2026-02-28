@@ -5,7 +5,6 @@ using AssetRipper.Export.Modules.Shaders.UltraShaderConverter.USIL;
 using AssetRipper.Primitives;
 using AssetsTools.NET;
 using Ryujinx.Graphics.Shader.Translation;
-using SPIRVCross;
 using System.Text;
 using USCSandbox;
 using USCSandbox.Processor;
@@ -82,132 +81,19 @@ namespace AssetRipper.Export.Modules.Shaders.UltraShaderConverter.Converter
         // Convert GLSL shader to UShaderProgram
         private void ConvertGLESShaderToUShaderProgram(ShaderGpuProgramType type)
         {
-            if (dbgData1.Length == 0)
-            {
-                throw new Exception($"You need to call {nameof(LoadGLESCompiledShader)} first!");
-            }
-
-            // Parse GLSL shader
-            string glslSource = Encoding.UTF8.GetString(dbgData1);
-            var glslParser = new GLSLParser(glslSource);
-            var glslInstructions = glslParser.Parse();
-
-            // Map GLSL instructions to USIL
-            var usilInstructions = new List<USILInstruction>();
-            foreach (var glslInstruction in glslInstructions)
-            {
-                usilInstructions.Add(MapGLSLToUSIL(glslInstruction));
-            }
-
-            // Create UShaderProgram
-            ShaderProgram = new UShaderProgram
-            {
-                shaderFunctionType = type == ShaderGpuProgramType.GLESVertex ? UShaderFunctionType.Vertex : UShaderFunctionType.Fragment,
-                Instructions = usilInstructions
-            };
+            throw new NotImplementedException("GLES shader conversion is not yet implemented.");
         }
 
         // Convert SPIR-V shader to UShaderProgram
         private void ConvertVulkanShaderToUShaderProgram(ShaderGpuProgramType type)
         {
-            if (dbgData1.Length == 0)
-            {
-                throw new Exception($"You need to call {nameof(LoadVulkanCompiledShader)} first!");
-            }
-
-            // Parse SPIR-V binary
-            var spirvParser = new SPIRVParser(dbgData1);
-            var spirvInstructions = spirvParser.Parse();
-
-            // Map SPIR-V instructions to USIL
-            var usilInstructions = new List<USILInstruction>();
-            foreach (var spirvInstruction in spirvInstructions)
-            {
-                usilInstructions.Add(MapSPIRVToUSIL(spirvInstruction));
-            }
-
-            // Create UShaderProgram
-            ShaderProgram = new UShaderProgram
-            {
-                shaderFunctionType = type == ShaderGpuProgramType.VulkanVS ? UShaderFunctionType.Vertex : UShaderFunctionType.Fragment,
-                Instructions = usilInstructions
-            };
+            throw new NotImplementedException("Vulkan (SPIR-V) shader conversion is not yet implemented.");
         }
 
         // Convert MSL shader to UShaderProgram
         private void ConvertMetalShaderToUShaderProgram(ShaderGpuProgramType type)
         {
-            if (dbgData1.Length == 0)
-            {
-                throw new Exception($"You need to call {nameof(LoadMetalCompiledShader)} first!");
-            }
-
-            // Parse MSL shader
-            string mslSource = Encoding.UTF8.GetString(dbgData1);
-            var mslParser = new MSLParser(mslSource);
-            var mslInstructions = mslParser.Parse();
-
-            // Map MSL instructions to USIL
-            var usilInstructions = new List<USILInstruction>();
-            foreach (var mslInstruction in mslInstructions)
-            {
-                usilInstructions.Add(MapMSLToUSIL(mslInstruction));
-            }
-
-            // Create UShaderProgram
-            ShaderProgram = new UShaderProgram
-            {
-                shaderFunctionType = type == ShaderGpuProgramType.MetalVS ? UShaderFunctionType.Vertex : UShaderFunctionType.Fragment,
-                Instructions = usilInstructions
-            };
-        }
-
-        // Map GLSL instructions to USIL
-        private USILInstruction MapGLSLToUSIL(GLSLInstruction glslInstruction)
-        {
-            // Example mapping for GLSL to USIL
-            return new USILInstruction
-            {
-                Opcode = glslInstruction.Opcode switch
-                {
-                    GLSL.Opcode.Add => USIL.Opcode.Add,
-                    GLSL.Opcode.Mul => USIL.Opcode.Mul,
-                    _ => throw new NotSupportedException($"Unsupported GLSL opcode: {glslInstruction.Opcode}")
-                },
-                Operands = glslInstruction.Operands
-            };
-        }
-
-        // Map SPIR-V instructions to USIL
-        private USILInstruction MapSPIRVToUSIL(SPIRVInstruction spirvInstruction)
-        {
-            // Example mapping for SPIR-V to USIL
-            return new USILInstruction
-            {
-                Opcode = spirvInstruction.Opcode switch
-                {
-                    SPIRV.Opcode.OpFAdd => USIL.Opcode.Add,
-                    SPIRV.Opcode.OpFMul => USIL.Opcode.Mul,
-                    _ => throw new NotSupportedException($"Unsupported SPIR-V opcode: {spirvInstruction.Opcode}")
-                },
-                Operands = spirvInstruction.Operands
-            };
-        }
-
-        // Map MSL instructions to USIL
-        private USILInstruction MapMSLToUSIL(MSLInstruction mslInstruction)
-        {
-            // Example mapping for MSL to USIL
-            return new USILInstruction
-            {
-                Opcode = mslInstruction.Opcode switch
-                {
-                    MSL.Opcode.Add => USIL.Opcode.Add,
-                    MSL.Opcode.Mul => USIL.Opcode.Mul,
-                    _ => throw new NotSupportedException($"Unsupported MSL opcode: {mslInstruction.Opcode}")
-                },
-                Operands = mslInstruction.Operands
-            };
+            throw new NotImplementedException("Metal (MSL) shader conversion is not yet implemented.");
         }
 
         // Other methods (unchanged)

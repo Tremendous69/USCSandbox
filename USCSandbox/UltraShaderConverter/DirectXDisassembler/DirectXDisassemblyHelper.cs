@@ -114,108 +114,25 @@ namespace AssetRipper.Export.Modules.Shaders.UltraShaderConverter.DirectXDisasse
                             line += " mode_comparison";
                         break;
                     }
-                    case Opcode.dcl_resource_texture2d:
+                    case Opcode.dcl_resource:
                     {
-                        line += $"t{inst.declData.resourceIndex}, texture2d";
-                        if (inst.declData.resourceReturnType != ResourceReturnType.Unknown)
+                        string dimName = inst.declData.resourceDimension switch
                         {
-                            line += ", " + inst.declData.resourceReturnType.ToString().ToLower();
-                        }
-                        break;
-                    }
-                    case Opcode.dcl_resource_texturecube:
-                    {
-                        line += $"t{inst.declData.resourceIndex}, texturecube";
-                        if (inst.declData.resourceReturnType != ResourceReturnType.Unknown)
-                        {
-                            line += ", " + inst.declData.resourceReturnType.ToString().ToLower();
-                        }
-                        break;
-                    }
-                    case Opcode.dcl_resource_buffer:
-                    {
-                        line += $"t{inst.declData.resourceIndex}, buffer";
-                        if (inst.declData.resourceReturnType != ResourceReturnType.Unknown)
-                        {
-                            line += ", " + inst.declData.resourceReturnType.ToString().ToLower();
-                        }
-                        break;
-                    }
-                    case Opcode.dcl_resource_structured:
-                    {
-                        line += $"t{inst.declData.resourceIndex}, structured";
-                        if (inst.declData.resourceReturnType != ResourceReturnType.Unknown)
-                        {
-                            line += ", " + inst.declData.resourceReturnType.ToString().ToLower();
-                        }
-                        break;
-                    }
-                    case Opcode.dcl_resource_raw:
-                    {
-                        line += $"t{inst.declData.resourceIndex}, raw";
-                        if (inst.declData.resourceReturnType != ResourceReturnType.Unknown)
-                        {
-                            line += ", " + inst.declData.resourceReturnType.ToString().ToLower();
-                        }
-                        break;
-                    }
-                    case Opcode.dcl_resource_texture1d:
-                    {
-                        line += $"t{inst.declData.resourceIndex}, texture1d";
-                        if (inst.declData.resourceReturnType != ResourceReturnType.Unknown)
-                        {
-                            line += ", " + inst.declData.resourceReturnType.ToString().ToLower();
-                        }
-                        break;
-                    }
-                    case Opcode.dcl_resource_texture3d:
-                    {
-                        line += $"t{inst.declData.resourceIndex}, texture3d";
-                        if (inst.declData.resourceReturnType != ResourceReturnType.Unknown)
-                        {
-                            line += ", " + inst.declData.resourceReturnType.ToString().ToLower();
-                        }
-                        break;
-                    }
-                    case Opcode.dcl_resource_texture2darray:
-                    {
-                        line += $"t{inst.declData.resourceIndex}, texture2darray";
-                        if (inst.declData.resourceReturnType != ResourceReturnType.Unknown)
-                        {
-                            line += ", " + inst.declData.resourceReturnType.ToString().ToLower();
-                        }
-                        break;
-                    }
-                    case Opcode.dcl_resource_texturecubearray:
-                    {
-                        line += $"t{inst.declData.resourceIndex}, texturecubearray";
-                        if (inst.declData.resourceReturnType != ResourceReturnType.Unknown)
-                        {
-                            line += ", " + inst.declData.resourceReturnType.ToString().ToLower();
-                        }
-                        break;
-                    }
-                    case Opcode.dcl_resource_texture2dms:
-                    {
-                        line += $"t{inst.declData.resourceIndex}, texture2dms";
-                        if (inst.declData.resourceReturnType != ResourceReturnType.Unknown)
-                        {
-                            line += ", " + inst.declData.resourceReturnType.ToString().ToLower();
-                        }
-                        break;
-                    }
-                    case Opcode.dcl_resource_texture2dmsarray:
-                    {
-                        line += $"t{inst.declData.resourceIndex}, texture2dmsarray";
-                        if (inst.declData.resourceReturnType != ResourceReturnType.Unknown)
-                        {
-                            line += ", " + inst.declData.resourceReturnType.ToString().ToLower();
-                        }
-                        break;
-                    }
-                    case Opcode.dcl_resource_texture1darray:
-                    {
-                        line += $"t{inst.declData.resourceIndex}, texture1darray";
+                            ResourceDimension.texture1d => "texture1d",
+                            ResourceDimension.texture2d => "texture2d",
+                            ResourceDimension.texture3d => "texture3d",
+                            ResourceDimension.texturecube => "texturecube",
+                            ResourceDimension.texture1darray => "texture1darray",
+                            ResourceDimension.texture2darray => "texture2darray",
+                            ResourceDimension.texture2dms => "texture2dms",
+                            ResourceDimension.texture2dmsarray => "texture2dmsarray",
+                            ResourceDimension.texturecubearray => "texturecubearray",
+                            ResourceDimension.buffer => "buffer",
+                            ResourceDimension.raw_buffer => "raw",
+                            ResourceDimension.structured_buffer => "structured",
+                            _ => inst.declData.resourceDimension.ToString()
+                        };
+                        line += $"t{inst.declData.resourceIndex}, {dimName}";
                         if (inst.declData.resourceReturnType != ResourceReturnType.Unknown)
                         {
                             line += ", " + inst.declData.resourceReturnType.ToString().ToLower();

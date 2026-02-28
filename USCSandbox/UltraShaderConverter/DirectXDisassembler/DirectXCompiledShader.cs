@@ -56,15 +56,6 @@ namespace AssetRipper.Export.Modules.Shaders.UltraShaderConverter.DirectXDisasse
                     case "SHEX":
                         blocks[i] = new SHDR(ms, blocks);
                         break;
-                    case "GLSL": // Added for OpenGL ES shaders
-                        blocks[i] = new GLSL(ms);
-                        break;
-                    case "VULK": // Added for Vulkan shaders
-                        blocks[i] = new VULK(ms);
-                        break;
-                    case "MTLB": // Added for Metal shaders
-                        blocks[i] = new MTLB(ms);
-                        break;
                 }
             }
         }

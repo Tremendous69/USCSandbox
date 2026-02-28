@@ -275,29 +275,10 @@ namespace USCSandbox.Processor
                 {
                     case ShaderGpuProgramType.DX11VertexSM40:
                     case ShaderGpuProgramType.DX11PixelSM40:
-                    case ShaderGpuProgramType.GLESVertex:
-                    case ShaderGpuProgramType.GLESFragment:
-                    case ShaderGpuProgramType.Vulkan:
-                    case ShaderGpuProgramType.Metal:
                     {
                         var conv = new USCShaderConverter();
-                        if (programType == ShaderGpuProgramType.GLESVertex || programType == ShaderGpuProgramType.GLESFragment)
-                        {
-                            conv.LoadGLESCompiledShader(new MemoryStream(subProg.ProgramData), graphicApi, _engVer);
-                        }
-                        else if (programType == ShaderGpuProgramType.Vulkan)
-                        {
-                            conv.LoadVulkanCompiledShader(new MemoryStream(subProg.ProgramData), graphicApi, _engVer);
-                        }
-                        else if (programType == ShaderGpuProgramType.Metal)
-                        {
-                            conv.LoadMetalCompiledShader(new MemoryStream(subProg.ProgramData), graphicApi, _engVer);
-                        }
-                        else
-                        {
-                            conv.LoadDirectXCompiledShader(new MemoryStream(subProg.ProgramData), graphicApi, _engVer);
-                        }
-                        conv.ConvertShaderToUShaderProgram(programType);
+                        conv.LoadDirectXCompiledShader(new MemoryStream(subProg.ProgramData), graphicApi, _engVer);
+                        conv.ConvertDxShaderToUShaderProgram();
                         conv.ApplyMetadataToProgram(subProg, param, _engVer);
 
                         UShaderFunctionToHLSL hlslConverter = new UShaderFunctionToHLSL(conv.ShaderProgram!, depth);
@@ -859,8 +840,8 @@ namespace USCSandbox.Processor
             {
                 GPUPlatform.d3d11 => ShaderGpuProgramType.DX11VertexSM40,
                 GPUPlatform.gles3 => ShaderGpuProgramType.GLESVertex,
-                GPUPlatform.vulkan => ShaderGpuProgramType.Vulkan,
-                GPUPlatform.metal => ShaderGpuProgramType.Metal,
+                GPUPlatform.vulkan => ShaderGpuProgramType.VulkanVS,
+                GPUPlatform.metal => ShaderGpuProgramType.MetalVS,
                 _ => ShaderGpuProgramType.DX11VertexSM40,
             };
         }
@@ -871,8 +852,8 @@ namespace USCSandbox.Processor
             {
                 GPUPlatform.d3d11 => ShaderGpuProgramType.DX11PixelSM40,
                 GPUPlatform.gles3 => ShaderGpuProgramType.GLESFragment,
-                GPUPlatform.vulkan => ShaderGpuProgramType.Vulkan,
-                GPUPlatform.metal => ShaderGpuProgramType.Metal,
+                GPUPlatform.vulkan => ShaderGpuProgramType.VulkanFS,
+                GPUPlatform.metal => ShaderGpuProgramType.MetalFS,
                 _ => ShaderGpuProgramType.DX11PixelSM40,
             };
         }

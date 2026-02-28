@@ -538,6 +538,9 @@
 
         public string? nameToken;
 
+        public ResourceReturnType resourceReturnType;
+        public int resourceIndex => operands.Length > 0 && operands[0].arraySizes.Length > 0 ? operands[0].arraySizes[0] : 0;
+
         public int tgsmStride;
         public int tgsmCount;
 
@@ -583,6 +586,7 @@
                 case Opcode.dcl_resource:
                 {
                     resourceDimension = (ResourceDimension)((instData & 0x0000f800) >> 11);
+                    resourceReturnType = (ResourceReturnType)((instData & 0x000f0000) >> 16);
                     operands = new SHDRInstructionOperand[1]
                     {
                         new SHDRInstructionOperand(reader)
@@ -778,6 +782,15 @@
                     reader.BaseStream.Position += 4;
                     tgsmStride = 4;
                     tgsmCount = reader.ReadInt32();
+                    break;
+                }
+                case Opcode.dcl_resource_raw:
+                case Opcode.dcl_resource_structured:
+                {
+                    operands = new SHDRInstructionOperand[1]
+                    {
+                        new SHDRInstructionOperand(reader)
+                    };
                     break;
                 }
             }
